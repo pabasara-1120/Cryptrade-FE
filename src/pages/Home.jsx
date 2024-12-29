@@ -1,6 +1,11 @@
 import React from 'react';
 import { Button } from "@/components/ui/button.jsx";
 import AssetTable from "@/pages/assetTable.jsx";
+import Stockchart from "@/pages/stockchart.jsx";
+import {Avatar, AvatarImage} from "@radix-ui/react-avatar";
+import bitcoin from "@/assets/bitcoin.avif";
+import {DotIcon} from "lucide-react";
+
 
 const Home = () => {
     const [category, setCategory] = React.useState("all");
@@ -51,6 +56,11 @@ const Home = () => {
                     >
                         <AssetTable />
                     </div>
+                </div>
+                <div className={"hidden lg:block lg:[50%] p-5"}>
+                    <Stockchart/>
+
+
                 </div>
             </div>
         </div>
