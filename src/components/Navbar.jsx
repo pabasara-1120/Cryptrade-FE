@@ -15,7 +15,7 @@ import {Button} from "@/components/ui/button.jsx";
 const Navbar = () => {
     return (
         <nav className="navbar">
-            <div className="flex justify-between items-center h-16">
+            <div className="flex justify-between items-center h-20">
                 {/* Left Section */}
                 <div className="flex items-center gap-6">
                     <Sheet>
@@ -40,7 +40,7 @@ const Navbar = () => {
                 {/* Center Section */}
                 <div className="flex-1 max-w-2xl px-4">
                     <Button variant="outlined" className="w-full flex items-center gap-2 justify-start px-4">
-                        <MagnifyingGlassIcon className="h-4 w-4"/>
+                        <MagnifyingGlassIcon className="h-6 w-6"/>
                         <span>Search</span>
                     </Button>
                 </div>
