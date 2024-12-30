@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Table,
     TableBody,
@@ -12,10 +12,34 @@ import {Avatar, AvatarImage} from "@radix-ui/react-avatar";
 import bitcoin from "@/assets/bitcoin.avif";
 
 
-const AssetTable = () => {
+const AssetTable = ({category}) => {
+
+    const [coins, setCoins] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const getCoins = async () => {
+            setLoading(true);
+            let url = "http://localhost:8080/coins?page=100";
+            if(category==="top50") {
+                url = "http://localhost:8080/coins/top50"
+            }
+            try{
+                const response = await fetch(url)
+                const data = await response.json();
+                setCoins(data);
+            }catch(err){
+                console.log(err);
+            }finally{
+                setLoading(false);
+            }
+        };
+        getCoins();
+    },[category])
+
     return (
         <Table>
-            <TableCaption >A list of your recent invoices.</TableCaption>
+            <TableCaption >The list of coins</TableCaption>
             <TableHeader>
                 <TableRow>
                     <TableHead >COIN</TableHead>
@@ -27,23 +51,35 @@ const AssetTable = () => {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1].map((item, index) => (<TableRow>
-                    <TableCell className="font-medium flex items-center gap-2">
-                        <Avatar className={"z-50"}>
-
-                            <AvatarImage src={bitcoin} className={"h-10 w-10"}></AvatarImage>
-
-
-                        </Avatar>
-                        <span>Bitcoin</span>
-                    </TableCell>
-                    <TableCell>BTC</TableCell>
-                    <TableCell>384938920</TableCell>
-                    <TableCell>742302</TableCell>
-                    <TableCell>0.4638</TableCell>
-                    <TableCell >$250.00</TableCell>
-                </TableRow>))}
-
+                {loading ? (
+                    <TableRow>
+                        <TableCell colSpan={6} className="text-center">
+                            Loading...
+                        </TableCell>
+                    </TableRow>
+                ) : (
+                    coins.map((coin) => (
+                        <TableRow key={coin.id}>
+                            <TableCell className="font-medium flex items-center gap-2">
+                                <Avatar className="z-50">
+                                    <AvatarImage src={coin.image} alt={coin.name} className="h-10 w-10" />
+                                </Avatar>
+                                <span>{coin.name}</span>
+                            </TableCell>
+                            <TableCell>{coin.symbol.toUpperCase()}</TableCell>
+                            <TableCell>{coin.total_volume.toLocaleString()}</TableCell>
+                            <TableCell>{coin.market_cap.toLocaleString()}</TableCell>
+                            <TableCell
+                                className={
+                                    coin.price_change_percentage_24h > 0 ? "text-green-500" : "text-red-500"
+                                }
+                            >
+                                {coin.price_change_percentage_24h.toFixed(2)}%
+                            </TableCell>
+                            <TableCell>${coin.current_price.toFixed(2)}</TableCell>
+                        </TableRow>
+                    ))
+                )}
             </TableBody>
         </Table>
 
