@@ -9,7 +9,6 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import {Avatar, AvatarImage} from "@radix-ui/react-avatar";
-import bitcoin from "@/assets/bitcoin.avif";
 
 
 const AssetTable = ({category}) => {
@@ -42,7 +41,7 @@ const AssetTable = ({category}) => {
             <TableCaption >The list of coins</TableCaption>
             <TableHeader>
                 <TableRow>
-                    <TableHead >COIN</TableHead>
+                    <TableHead className={"pl-10"} >COIN</TableHead>
                     <TableHead>SYMBOL</TableHead>
                     <TableHead>VOLUME</TableHead>
                     <TableHead>MARKET_CAP</TableHead>
@@ -60,7 +59,7 @@ const AssetTable = ({category}) => {
                 ) : (
                     coins.map((coin) => (
                         <TableRow key={coin.id}>
-                            <TableCell className="font-medium flex items-center gap-2">
+                            <TableCell className="font-medium flex items-center gap-2 pl-10">
                                 <Avatar className="z-50">
                                     <AvatarImage src={coin.image} alt={coin.name} className="h-10 w-10" />
                                 </Avatar>
