@@ -1,0 +1,9 @@
+.authContainer {
+     background-image:
+            url( "https://img.freepik.com/premium-photo/bitcoin-technology-background-blue-tone-bitcoin-with-network-transfer-dark-background-cryptocurrency-investment-concept-digital-future-coin-currency-financial-background_36367-1525.jpg");
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
