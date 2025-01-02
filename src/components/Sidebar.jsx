@@ -10,6 +10,7 @@ import {
     WalletIcon
 } from "lucide-react";
 import {Button} from "@/components/ui/button";
+import {useNavigate} from "react-router";
 
 const menu = [
     { name: 'Home', path: "/", icon: <HomeIcon /> },
@@ -24,14 +25,17 @@ const menu = [
 ];
 
 
+
+
 const Sidebar = () => {
+    const navigate = useNavigate();
     return (
         <div className={"mt-5 space-y-3"}>
             {menu.map((item, index) => (
                 <Button variant={"outlined"}
                     key={index}
                     className="flex justify-items-start gap-3 py-3 px-4 w-full hover:bg-gray-700 rounded-lg transition-colors text-left"
-                >
+                    onClick={() => navigate(item.path)}>
                     <span className="text-cyan-300">{item.icon}</span>
                     <p className={"text-xl"}>{item.name}</p>
                 </Button>
