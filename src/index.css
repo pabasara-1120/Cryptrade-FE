@@ -39,6 +39,23 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+.navbar {
+  width: 100vw;
+  max-width: 100%;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: var(--background);
+}
+
+.navbar > div {
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
 
 
 
