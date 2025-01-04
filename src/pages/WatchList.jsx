@@ -1,50 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const WatchList = () => {
-    // Sample data to mimic API response
-    const watchlistData = {
-        "id": 52,
-        "user": {
-            "id": 253,
-            "fullName": "Darrel Rivers"
-        },
-        "coins": [
-            {
-                "id": "tether",
-                "symbol": "usdt",
-                "name": "Tether",
-                "image": "https://coin-images.coingecko.com/coins/images/325/large/Tether.png",
-                "current_price": 0.999816,
-                "market_cap": 139397611439,
-                "market_cap_rank": 3,
-                "price_change_percentage_24h": 0.02563,
-                "total_volume": -632526206
-            },
-            {
-                "id": "ethereum",
-                "symbol": "eth",
-                "name": "Ethereum",
-                "image": "https://coin-images.coingecko.com/coins/images/279/large/ethereum.png",
-                "current_price": 3332.28,
-                "market_cap": 401529485695,
-                "market_cap_rank": 2,
-                "price_change_percentage_24h": -3.91679,
-                "total_volume": -1879520006
-            },
-            {
-                "id": "bitcoin",
-                "symbol": "btc",
-                "name": "Bitcoin",
-                "image": "https://coin-images.coingecko.com/coins/images/1/large/bitcoin.png",
-                "current_price": 95553.0,
-                "market_cap": 1892059869154,
-                "market_cap_rank": 1,
-                "price_change_percentage_24h": -3.39702,
-                "total_volume": 852727874
+    const [watchlistData, setWatchlistData] = useState({ coins: [] });
+
+    useEffect(() => {
+        const getCoins = async () => {
+            try {
+                const token = sessionStorage.getItem("jwt");
+                console.log("Token:", token);
+                const response = await fetch("http://localhost:8080/api/watchlist/user", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                const data = await response.json();
+                console.log("Watchlist Data:", data);
+                setWatchlistData(data);
+            } catch (err) {
+                console.error(err);
             }
-        ]
-    };
+        };
+
+        getCoins();
+    }, []);
 
     return (
         <div className="relative p-10">
@@ -63,7 +45,6 @@ const WatchList = () => {
                             <TableHead>24h</TableHead>
                             <TableHead>PRICE</TableHead>
                             <TableHead>RANK</TableHead>
-
                         </TableRow>
                     </TableHeader>
                     <TableBody>
