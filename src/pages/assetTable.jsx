@@ -15,6 +15,12 @@ const AssetTable = ({category,onSelectCoin}) => {
 
     const [coins, setCoins] = useState([]);
     const [loading, setLoading] = useState(false);
+    const[selectedCoin, setSelectedCoin] = useState(null);
+
+    const handleRowClick = (coinId) => {
+        setSelectedCoin(coinId);
+        onSelectCoin(coinId);
+    }
 
     useEffect(() => {
         const getCoins = async () => {
@@ -60,8 +66,11 @@ const AssetTable = ({category,onSelectCoin}) => {
                     coins.map((coin) => (
                         <TableRow
                             key={coin.id}
-                            onClick={() => onSelectCoin(coin.id)}
-                            className="cursor-pointer hover:bg-gray-800"
+                            onClick={() => handleRowClick(coin.id)}
+                            className={`cursor-pointer hover:bg-gray-800 ${
+                                selectedCoin === coin.id ? "bg-gray-700 text-white" : ""
+                            }`}
+
                         >
                             <TableCell className="font-medium flex items-center gap-2 pl-10">
                                 <Avatar className="z-50">
