@@ -63,7 +63,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className={"hidden lg:block lg:[50%] p-5"}>
-                    <Stockchart coinId = {selectedCoin}  />
+                    <Stockchart coinId = {selectedCoin || "bitcoin"}  />
                     <div className={"flex gap-5 items-center"}>
                         <div>
                             <Avatar>
@@ -74,7 +74,7 @@ const Home = () => {
                             <div className={"flex items-center gap-2"}>
                                 <p>ETH</p>
                                 <DotIcon className="w-10 h-10 text-gray-400" />
-                                <p className={"text-gray-400"}>Ethereum</p>
+                                <p className={"text-gray-400"}>{selectedCoin}</p>
                             </div>
                             <div className={"flex items-end gap-2"}>
                                 <p className={"text-xl font-bold"}>6464</p>
