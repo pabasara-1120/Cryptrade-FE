@@ -8,10 +8,16 @@ import { DotIcon, MessageCircle } from "lucide-react";
 
 const Home = () => {
     const [category, setCategory] = useState("all");
+    const[selectedCoin, setSelectedCoin] = useState(null);
 
     const handleCategoryChange = (value) => {
         setCategory(value);
     };
+
+    const handleSelectCoin = (value) => {
+        setSelectedCoin(value);
+        console.log(value)
+    }
 
     return (
         <div className="relative">
@@ -53,11 +59,11 @@ const Home = () => {
                         className="h-[900px] mb-4 overflow-y-auto"
                         style={{ scrollBehavior: "smooth" }}
                     >
-                        <AssetTable category={category} />
+                        <AssetTable category={category} onSelectCoin={handleSelectCoin} />
                     </div>
                 </div>
                 <div className={"hidden lg:block lg:[50%] p-5"}>
-                    <Stockchart />
+                    <Stockchart coinId = {selectedCoin}  />
                     <div className={"flex gap-5 items-center"}>
                         <div>
                             <Avatar>

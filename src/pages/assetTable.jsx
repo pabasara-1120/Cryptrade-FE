@@ -11,7 +11,7 @@ import {
 import {Avatar, AvatarImage} from "@radix-ui/react-avatar";
 
 
-const AssetTable = ({category}) => {
+const AssetTable = ({category,onSelectCoin}) => {
 
     const [coins, setCoins] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -38,15 +38,15 @@ const AssetTable = ({category}) => {
 
     return (
         <Table>
-            <TableCaption >The list of coins</TableCaption>
+            <TableCaption>The list of coins</TableCaption>
             <TableHeader>
                 <TableRow>
-                    <TableHead className={"pl-10"} >COIN</TableHead>
+                    <TableHead className={"pl-10"}>COIN</TableHead>
                     <TableHead>SYMBOL</TableHead>
                     <TableHead>VOLUME</TableHead>
                     <TableHead>MARKET_CAP</TableHead>
                     <TableHead>24h</TableHead>
-                    <TableHead >PRICE</TableHead>
+                    <TableHead>PRICE</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -58,7 +58,11 @@ const AssetTable = ({category}) => {
                     </TableRow>
                 ) : (
                     coins.map((coin) => (
-                        <TableRow key={coin.id}>
+                        <TableRow
+                            key={coin.id}
+                            onClick={() => onSelectCoin(coin.id)}
+                            className="cursor-pointer hover:bg-gray-800"
+                        >
                             <TableCell className="font-medium flex items-center gap-2 pl-10">
                                 <Avatar className="z-50">
                                     <AvatarImage src={coin.image} alt={coin.name} className="h-10 w-10" />
@@ -81,7 +85,6 @@ const AssetTable = ({category}) => {
                 )}
             </TableBody>
         </Table>
-
     );
 };
 
