@@ -4,12 +4,16 @@ import './index.css'
 import App from './App.jsx'
 import Auth from "@/Auth/auth.jsx";
 import {BrowserRouter} from "react-router";
+import { store } from './store';
+import {Provider} from "react-redux";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+      <Provider store={store}>
     <BrowserRouter>
         <App/>
     </BrowserRouter>
+      </Provider>
 
 
   </StrictMode>,

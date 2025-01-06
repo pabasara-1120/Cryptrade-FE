@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
     Table,
     TableBody,
@@ -7,47 +8,29 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
-import {Avatar, AvatarImage} from "@radix-ui/react-avatar";
+} from "@/components/ui/table";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import {fetchCoins} from "@/store/features/cryptoSlice.js";
 
-
-const AssetTable = ({category,onSelectCoin}) => {
-
-    const [coins, setCoins] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const[selectedCoin, setSelectedCoin] = useState(null);
-
-    const handleRowClick = (coinId) => {
-        setSelectedCoin(coinId);
-        onSelectCoin(coinId);
-    }
+const AssetTable = ({ category, onSelectCoin }) => {
+    const dispatch = useDispatch();
+    const { [category]: coins = [], loading } = useSelector((state) => state.coins);
 
     useEffect(() => {
-        const getCoins = async () => {
-            setLoading(true);
-            let url = "http://localhost:8080/coins?page=100";
-            if(category==="top50") {
-                url = "http://localhost:8080/coins/top50"
-            }
-            try{
-                const response = await fetch(url)
-                const data = await response.json();
-                setCoins(data);
-            }catch(err){
-                console.log(err);
-            }finally{
-                setLoading(false);
-            }
-        };
-        getCoins();
-    },[category])
+        // Fetch coins if not already in the store
+        dispatch(fetchCoins(category));
+    }, [dispatch, category]);
+
+    const handleRowClick = (coinId) => {
+        onSelectCoin(coinId);
+    };
 
     return (
         <Table>
             <TableCaption>The list of coins</TableCaption>
             <TableHeader>
                 <TableRow>
-                    <TableHead className={"pl-10"}>COIN</TableHead>
+                    <TableHead className="pl-10">COIN</TableHead>
                     <TableHead>SYMBOL</TableHead>
                     <TableHead>VOLUME</TableHead>
                     <TableHead>MARKET_CAP</TableHead>
@@ -67,13 +50,10 @@ const AssetTable = ({category,onSelectCoin}) => {
                         <TableRow
                             key={coin.id}
                             onClick={() => handleRowClick(coin.id)}
-                            className={`cursor-pointer hover:bg-gray-800 ${
-                                selectedCoin === coin.id ? "bg-gray-700 text-white" : ""
-                            }`}
-
+                            className="cursor-pointer hover:bg-gray-800"
                         >
                             <TableCell className="font-medium flex items-center gap-2 pl-10">
-                                <Avatar className="z-50">
+                                <Avatar>
                                     <AvatarImage src={coin.image} alt={coin.name} className="h-10 w-10" />
                                 </Avatar>
                                 <span>{coin.name}</span>
