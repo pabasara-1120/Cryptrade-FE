@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button.jsx";
 import AssetTable from "@/pages/assetTable.jsx";
 import Stockchart from "@/pages/stockchart.jsx";
+import ChatbotComponent from "@/components/ChatbotComponent.jsx";
 
 const Home = () => {
     const [category, setCategory] = useState("all");
@@ -43,6 +44,7 @@ const Home = () => {
                 <div className="hidden lg:block lg:w-[50%] p-5">
                     <Stockchart coinId={selectedCoin || "bitcoin"} />
                 </div>
+                <ChatbotComponent/>
             </div>
         </div>
     );
