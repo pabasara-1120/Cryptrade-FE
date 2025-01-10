@@ -72,24 +72,59 @@
     align-self: flex-start;
 }
 
-.chatbot-input {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
+/* Chat Input Field */
 .chat-input {
     flex: 1;
-    padding: 8px;
-    border: 1px solid #3A3B4F;
-    border-radius: 4px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    margin-right: 10px;
+    font-size: 14px;
+    color: #333; /* Ensure input text is visible */
+    background-color: #fff; /* Set the input background to white */
 }
 
+.chat-input:focus {
+    outline: none;
+    border-color: #007bff; /* Focus border color */
+}
+
+/* User Message Styling */
+.user-message {
+    background-color: #007bff; /* Blue background for user messages */
+    color: white; /* White text for user messages */
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 10px;
+    align-self: flex-end; /* Align user messages to the right */
+    max-width: 80%; /* Prevent the message from stretching too far */
+    word-wrap: break-word; /* Ensure long messages wrap to the next line */
+}
+
+/* Bot Message Styling */
+.bot-message {
+    background-color: #2c2c2c; /* Dark grey for bot messages */
+    color: #f1f1f1; /* Light text for bot messages */
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 10px;
+    align-self: flex-start; /* Align bot messages to the left */
+    max-width: 80%; /* Prevent the message from stretching too far */
+    word-wrap: break-word; /* Ensure long messages wrap to the next line */
+}
+
+/* Send Button */
 .send-button {
-    background-color: #5656F7;
-    color: #FFFFFF;
+    background-color: #007bff;
+    color: white;
     border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
+    padding: 10px 20px;
+    border-radius: 20px;
     cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.send-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
 }
