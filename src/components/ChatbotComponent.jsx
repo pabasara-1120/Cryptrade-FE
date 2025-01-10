@@ -1,13 +1,61 @@
-// ChatbotComponent.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import './ChatbotComponent.css';
 
 const ChatbotComponent = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [messages, setMessages] = useState([{ sender: 'bot', text: 'Hi! How can I assist you today?' }]);
+    const [input, setInput] = useState('');
+    const jwt = sessionStorage.getItem('jwt'); // Assume JWT is stored in local storage after user login
 
     const toggleChatbot = () => {
         setIsOpen(!isOpen);
+    };
+
+    const sendMessage = async () => {
+        if (!input.trim()) return;
+
+        // Display user's message in chat
+        setMessages((prevMessages) => [...prevMessages, { sender: 'user', text: input }]);
+
+        try {
+            // Send user message and JWT to the backend
+            const response = await fetch('http://localhost:8000/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`, // Pass JWT in the Authorization header
+                },
+                body: JSON.stringify({ prompt: input }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            // Display bot's response in chat
+            setMessages((prevMessages) => [
+                ...prevMessages,
+                { sender: 'bot', text: data.bot },
+            ]);
+
+            if (data.sources) {
+                setMessages((prevMessages) => [
+                    ...prevMessages,
+                    { sender: 'bot', text: `Sources: ${data.sources.join(', ')}` },
+                ]);
+            }
+        } catch (error) {
+            console.error('Error sending message:', error);
+            setMessages((prevMessages) => [
+                ...prevMessages,
+                { sender: 'bot', text: 'Sorry, something went wrong. Please try again later.' },
+            ]);
+        }
+
+        setInput(''); // Clear input
     };
 
     return (
@@ -33,16 +81,27 @@ const ChatbotComponent = () => {
                     </div>
                     <div className="chatbot-body">
                         <div className="chatbot-messages">
-                            {/* Chat messages will go here */}
-                            <p className="bot-message">Hi! How can I assist you today?</p>
+                            {messages.map((msg, index) => (
+                                <p
+                                    key={index}
+                                    className={msg.sender === 'bot' ? 'bot-message' : 'user-message'}
+                                >
+                                    {msg.text}
+                                </p>
+                            ))}
                         </div>
                         <div className="chatbot-input">
                             <input
                                 type="text"
                                 placeholder="Type your message..."
                                 className="chat-input"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                             />
-                            <button className="send-button">Send</button>
+                            <button className="send-button" onClick={sendMessage}>
+                                Send
+                            </button>
                         </div>
                     </div>
                 </div>
