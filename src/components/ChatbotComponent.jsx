@@ -15,8 +15,14 @@ const ChatbotComponent = () => {
     const sendMessage = async () => {
         if (!input.trim()) return;
 
-        // Display user's message in chat
-        setMessages((prevMessages) => [...prevMessages, { sender: 'user', text: input }]);
+        // Immediately add the user's message to the chat
+        setMessages((prevMessages) => [
+            ...prevMessages,
+            { sender: 'user', text: input },
+        ]);
+
+        // Clear input after adding the message
+        setInput('');
 
         try {
             // Send user message and JWT to the backend
@@ -33,34 +39,40 @@ const ChatbotComponent = () => {
                 throw new Error(`Error: ${response.status}`);
             }
 
-
-
+            // Process the streamed response
             const reader = response.body.getReader();
             const decoder = new TextDecoder('utf-8');
             let botMessage = '';
+
+            // Add a placeholder for bot's message (so it doesn't overwrite user input)
+            setMessages((prevMessages) => [
+                ...prevMessages,
+                { sender: 'bot', text: '...' }, // Placeholder for bot's response
+            ]);
 
             while (true) {
                 const { value, done } = await reader.read();
                 if (done) break;
 
                 botMessage += decoder.decode(value, { stream: true });
+
+                // Update the bot's message dynamically
                 setMessages((prevMessages) => [
-                    ...prevMessages.slice(0, -1), // Remove the placeholder bot message
+                    ...prevMessages.slice(0, -1), // Remove the placeholder
                     { sender: 'bot', text: botMessage }, // Append the updated message
                 ]);
             }
-
-
         } catch (error) {
             console.error('Error sending message:', error);
+
+            // Show error message in chat
             setMessages((prevMessages) => [
                 ...prevMessages,
                 { sender: 'bot', text: 'Sorry, something went wrong. Please try again later.' },
             ]);
         }
-
-        setInput(''); // Clear input
     };
+
 
     return (
         <div>
