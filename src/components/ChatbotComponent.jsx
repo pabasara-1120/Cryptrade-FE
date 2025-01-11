@@ -33,20 +33,24 @@ const ChatbotComponent = () => {
                 throw new Error(`Error: ${response.status}`);
             }
 
-            const data = await response.json();
 
-            // Display bot's response in chat
-            setMessages((prevMessages) => [
-                ...prevMessages,
-                { sender: 'bot', text: data.bot },
-            ]);
 
-            if (data.sources) {
+
+            const decoder = new TextDecoder('utf-8');
+            let botMessage = '';
+
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+
+                botMessage += decoder.decode(value, { stream: true });
                 setMessages((prevMessages) => [
-                    ...prevMessages,
-                    { sender: 'bot', text: `Sources: ${data.sources.join(', ')}` },
+                    ...prevMessages.slice(0, -1), // Remove the placeholder bot message
+                    { sender: 'bot', text: botMessage }, // Append the updated message
                 ]);
             }
+
+
         } catch (error) {
             console.error('Error sending message:', error);
             setMessages((prevMessages) => [
