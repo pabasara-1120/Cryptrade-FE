@@ -35,7 +35,7 @@ const ChatbotComponent = () => {
 
 
 
-
+            const reader = response.body.getReader();
             const decoder = new TextDecoder('utf-8');
             let botMessage = '';
 
